@@ -1,0 +1,11 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "here i am going to creating a real state web",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "dhruva thakur",
+  "license": "ISC"
+}
