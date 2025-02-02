@@ -4,6 +4,7 @@ import postRouter from "./routes/post.route.js"
 import authRouter from "./routes/auth.route.js"
 import cookieParser from "cookie-parser"
 import cors from "cors"
+import testRoute from "./routes/test.route.js"
 const app=express();
 dotenv.config({
     path: "./env",
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/api/v1",postRouter);
 app.use("/api/auth",authRouter);
+app.use("/api/test",testRoute);
 const port=process.env.PORT;
 app.listen(port,()=>{
     console.log(`connection is successfully run at port ${port}`)

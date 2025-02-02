@@ -32,27 +32,29 @@ const loginUser = async (req, res) => {
     if (!username && !email) return res.status(400).json({ message: "Username or email is required" });
     if (!password) return res.status(400).json({ message: "Password is required" });
 
-    const existedUser = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
         where: { OR: [{ email }, { username }] }
     });
 
-    if (!existedUser) return res.status(400).json({ message: "User not registered" });
+    if (!user) return res.status(400).json({ message: "User not registered" });
 
-    const comparePassword = await bcrypt.compare(password, existedUser.password);
+    const comparePassword = await bcrypt.compare(password, user.password);
     if (!comparePassword) return res.status(400).json({ message: "Password doesn't match" });
     const age = ms(process.env.ACCESS_TOKEN_EXPIRY || "7d");
 
     const token = jwt.sign(
-        { id: existedUser.id },
+        { id: user.id ,
+          isAdmin:true
+        },
         process.env.JWT_SECRET_KEY,
         { expiresIn: process.env.JWT_SECRET_EXPIRY }
     );
-
+const {password:userPassword, ...userinfo}=user;
     res.cookie("token", token, {
         httpOnly: true,
         secure:true,
         maxAge: age
-    }).status(200).json({ message: "Login successful" });
+    }).status(200).json(userinfo);
 
 } catch (error) {
     return res.status(500).json({ message: "Failed to login", error: error.message });

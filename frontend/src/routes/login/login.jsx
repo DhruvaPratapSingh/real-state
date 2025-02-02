@@ -1,26 +1,30 @@
 import "./login.scss";
 import { Link } from "react-router-dom";
-import { useState, useNavigate } from "react";
-import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import apiRequest from "../../lib/apiRequest";
 function Login() {
   const navigate=useNavigate();
   const [error,setError]=useState("");
   const [loading,setLoading]=useState(false);
   const handleSubmit=async(e)=>{
     e.preventDefault();
+    setError("");
     setLoading(true);
    const formdata = new FormData(e.target);
    const username = formdata.get('username');
-   const email = formdata.get('email');
+  //  const email = formdata.get('email');
    const password = formdata.get('password');
    try {
-    const res=await axios.post('http://localhost:8000/api/auth/login',{
-     username, email, password
+    const res=await apiRequest.post('/auth/login',{
+     username, password
     })
-    navigate("/register");
-    // console.log(res.data);
+    // console.log(res);
+    localStorage.setItem("user",res.data)
+    navigate("/");
   } catch (error) {
-    setError(error.response.data.error)
+    console.log(error);
+    setError(error.response.data.message)
   } finally {
     setLoading(false);
   }
