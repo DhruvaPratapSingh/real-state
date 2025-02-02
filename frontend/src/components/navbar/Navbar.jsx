@@ -26,17 +26,15 @@ function Navbar() {
              alt=""
             />
             <span>{currentUser.username}</span>
-            <Link to="/profile" className="profile">
+            <Link to="/profile" className="profile"  onClick={() => console.log("Profile clicked")}>
               <div className="notification">3</div>
               <span>Profile</span>
             </Link>
           </div>
         ) : (
           <>
-            <Link to="/login">Sign in</Link>
-            <Link to="/register" className="register">
-              Sign up
-            </Link>
+            <a href="/login">Sign in</a>
+            <a href="/register" className="register">Sign up</a>
           </>
         )}
         <div className="menuIcon">
