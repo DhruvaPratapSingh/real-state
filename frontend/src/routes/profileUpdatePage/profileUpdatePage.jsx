@@ -1,29 +1,42 @@
 import "./profileUpdatePage.scss";
 import { AuthContext } from './../../context/AuthContext';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import apiRequest from './../../lib/apiRequest.js';
 import { useNavigate } from "react-router-dom";
+import UploadWidget from "../../components/uploadWidget/UploadWidget";
 
 function ProfileUpdatePage() {
   const { currentUser, updateUser } = useContext(AuthContext);
+  const [avatar, setAvatar] = useState(currentUser.avatar);
   const [value, setValue] = useState({
     username: currentUser.username || "",
     email: currentUser.email || "",
-    password: ""
+    password: "",
+    avatar: currentUser.avatar || "",
   });
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setValue((prev) => ({ ...prev, avatar }));
+    // console.log(typeof avatar);
+    // console.log(avatar);
+    // console.log(avatar?.[0]);
+    // console.log(typeof avatar?.[0]);
+  }, [avatar]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await apiRequest.put(`/users/${currentUser.id}`, value);
+      const res = await apiRequest.put(`/users/${currentUser.id}`, value, {
+        headers: { "Content-Type": "application/json" },
+      });
       console.log(res.data);
       updateUser(res.data);
       navigate("/profile");
     } catch (error) {
-      console.log(error);
-      setError(error.message);
+      console.error("Error updating profile:", error);
+      setError(error.response?.data?.message || "An error occurred while updating your profile.");
     }
   };
 
@@ -71,9 +84,19 @@ function ProfileUpdatePage() {
       </div>
       <div className="sideContainer">
         <img
-          src={currentUser.avatar || "https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_1280.png"}
+          src={avatar?.[0] || currentUser.avatar || "https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_1280.png"}
           alt="Profile Avatar"
           className="avatar"
+        />
+        <UploadWidget
+          uwConfig={{
+            cloudName: "dtqy9mnph",
+            uploadPreset: "estate",
+            folder: "avatars",
+            multiple: false,
+            maxImageFileSize: 2000000
+          }}
+          setAvatar={setAvatar}
         />
       </div>
     </div>

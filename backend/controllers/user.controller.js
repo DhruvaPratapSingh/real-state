@@ -38,7 +38,7 @@ const updateUser = async (req, res) => {
             data:{
                ...inputs,
                ...(hashedpassword && {password:hashedpassword}),
-               ...(avatar && {avatar}),
+               ...(avatar && { avatar: Array.isArray(avatar) ? avatar[0] : avatar }),
             },
         });
         const {password:userpassword,...rest}=updatedUser;
