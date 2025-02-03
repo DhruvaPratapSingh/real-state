@@ -8,6 +8,8 @@ import UploadWidget from "../../components/uploadWidget/UploadWidget";
 function ProfileUpdatePage() {
   const { currentUser, updateUser } = useContext(AuthContext);
   const [avatar, setAvatar] = useState(currentUser.avatar);
+  console.log(typeof currentUser.avatar)
+
   const [value, setValue] = useState({
     username: currentUser.username || "",
     email: currentUser.email || "",
@@ -84,8 +86,7 @@ function ProfileUpdatePage() {
       </div>
       <div className="sideContainer">
         <img
-          src={avatar?.[0] || currentUser.avatar || "https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_1280.png"}
-          alt="Profile Avatar"
+          src={avatar[0] || currentUser.avatar || "https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_1280.png"}
           className="avatar"
         />
         <UploadWidget
