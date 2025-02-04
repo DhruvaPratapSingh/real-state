@@ -10,27 +10,46 @@ try {
 }
 }
 const getPost = async (req, res) => {
-try {
-    const id = req.params.id;
-    const post = await prisma.post.findUnique({
-        where: { id }
-    });
-    res.status(200).json({ post });
-    console.log("Get a single post");
-} catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
-}
-}
+    try {
+        const id = req.params.id;
+        const post = await prisma.post.findUnique({
+            where: { id },
+            include: { 
+                postDetail: true,
+                // user: true //this one return whole details of user
+                user: {
+                    select: {
+                        username: true,
+                       avatar: true
+                    }
+                }
+            }
+        });
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        res.status(200).json({ post });
+        console.log("Get a single post");
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const addPost = async (req, res) => {
     const body=req.body;
     const tokenUserId=req.userId;
 try {
     const post = await prisma.post.create({
         data: {
-            ...body,
-            userId:tokenUserId
+            ...body.postData,
+            userId:tokenUserId,
+            postDetail:{
+               create:body.postDetail,
         }
+    }
     });
     res.status(200).json({ post });
     console.log("Add a post");  
