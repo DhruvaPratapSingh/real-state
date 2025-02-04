@@ -41,7 +41,10 @@ function NewPostPage() {
         restaurant:parseInt(inputs.restaurant),
         }
       })
-      navigate("/"+res.data.id);
+      // console.log(res.data);
+      // console.log(res.data.post.id);
+      // console.log(res);
+      navigate("/"+res.data.post.id);
       console.log("success");
     } catch (error) {
       seterror(error);
