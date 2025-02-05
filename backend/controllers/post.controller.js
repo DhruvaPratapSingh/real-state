@@ -1,7 +1,7 @@
 import  {prisma}  from "../lib/prisma.js";
 const getPosts = async (req, res) => {
     const query=req.query;
-    console.log("query in query controller",query);
+    // console.log("query in query controller",query);
 try {
     const posts = await prisma.post.findMany({
         where:{
@@ -16,7 +16,8 @@ try {
 
         }
     });
-    res.status(200).json({ posts });
+    // console.log(posts.length)
+    res.status(200).json(posts);
     console.log("Get all posts");
 } catch (error) {
     console.log(error);
