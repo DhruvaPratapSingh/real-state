@@ -53,6 +53,7 @@ nav {
     justify-content: flex-end;
     background-color: #fcf5f3;
     height: 100%;
+    z-index: 1000;
 
     @include md {
       background-color: transparent;

@@ -13,7 +13,7 @@
       text-transform: capitalize;
 
       &.active {
-        background-color: rgb(227, 122, 10);
+        background-color: black;
         color: white;
       }
 
@@ -71,27 +71,28 @@
         border: 1px solid #999;
       }
     }
-a{
-  background-color: #fece51;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-    button {
-      background-color: #fece51;
+
+    a{
       flex: 1;
-      border: none;
-      cursor: pointer;
+      background-color: #fece51;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      @include sm{
-        padding: 10px;
-      }
-
-      img {
-        width: 24px;
-        height: 24px;
+      button {
+        border: none;
+        cursor: pointer;
+        background-color: #fece51;
+        
+        @include sm{
+          padding: 10px;
+        }
+        
+        img {
+          width: 24px;
+          height: 24px;
+        }
       }
     }
-  }
   }
 }

@@ -1,17 +1,25 @@
-import { useState,useContext } from "react";
+import { useContext, useState } from "react";
 import "./navbar.scss";
 import { Link } from "react-router-dom";
-import { AuthContext } from './../../context/AuthContext';
+import { AuthContext } from "../../context/AuthContext";
+import { useNotificationStore } from "../../lib/notificationStore";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
-  const{currentUser}=useContext(AuthContext);
+
+  const { currentUser } = useContext(AuthContext);
+
+  const fetch = useNotificationStore((state) => state.fetch);
+  const number = useNotificationStore((state) => state.number);
+
+  if(currentUser) fetch();
+
   return (
     <nav>
       <div className="left">
         <a href="/" className="logo">
           <img src="/logo.png" alt="" />
-          <span>LamaEstate</span>
+          <span>Real Estate</span>
         </a>
         <a href="/">Home</a>
         <a href="/">About</a>
@@ -21,20 +29,19 @@ function Navbar() {
       <div className="right">
         {currentUser ? (
           <div className="user">
-            <img
-             src={currentUser.avatar||"https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_1280.png"}
-             alt=""
-            />
+            <img src={currentUser.avatar || "/noavatar.jpg"} alt="" />
             <span>{currentUser.username}</span>
-            <Link to="/profile" className="profile"  onClick={() => console.log("Profile clicked")}>
-              <div className="notification">3</div>
+            <Link to="/profile" className="profile">
+               <div className="notification">3</div>
               <span>Profile</span>
             </Link>
           </div>
         ) : (
           <>
-            <a href="/login" className="login">Sign in</a>
-            <a href="/register" className="register">Sign up</a>
+            <a href="/login">Sign in</a>
+            <a href="/register" className="register">
+              Sign up
+            </a>
           </>
         )}
         <div className="menuIcon">

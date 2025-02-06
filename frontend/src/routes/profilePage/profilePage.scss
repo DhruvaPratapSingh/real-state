@@ -52,19 +52,17 @@
           align-items: center;
           gap: 20px;
         }
+
         button{
           width: 100px;
-  background-color: rgb(182, 24, 16);
-  border:none;
-  border-radius:20px;
-  padding: 6px 3px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 15px;
+          background-color: teal;
+          border: none;
+          color: white;
+          padding: 10px 20px;
+          cursor: pointer;
+          border-radius: 5px;
         }
-        button:active{
-          background-color:red;
-        }
+
         img{
           width: 40px;
           height: 40px;

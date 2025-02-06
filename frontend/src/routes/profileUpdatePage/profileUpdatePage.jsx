@@ -1,44 +1,35 @@
+import { useContext, useState } from "react";
 import "./profileUpdatePage.scss";
-import { AuthContext } from './../../context/AuthContext';
-import { useContext, useState, useEffect } from 'react';
-import apiRequest from './../../lib/apiRequest.js';
+import { AuthContext } from "../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
 import { useNavigate } from "react-router-dom";
 import UploadWidget from "../../components/uploadWidget/UploadWidget";
 
 function ProfileUpdatePage() {
   const { currentUser, updateUser } = useContext(AuthContext);
-  const [avatar, setAvatar] = useState([]);
-  console.log(typeof currentUser.avatar)
-
-  const [value, setValue] = useState({
-    username: currentUser.username || "",
-    email: currentUser.email || "",
-    password: "",
-    avatar: currentUser.avatar || avatar[0],
-  });
-  const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [avatar, setAvatar] = useState([]);
 
-  useEffect(() => {
-    setValue((prev) => ({ ...prev, avatar }));
-    // console.log(typeof avatar);
-    // console.log(avatar);
-    // console.log(avatar?.[0]);
-    // console.log(typeof avatar?.[0]);
-  }, [avatar]);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData(e.target);
+
+    const { username, email, password } = Object.fromEntries(formData);
+
     try {
-      const res = await apiRequest.put(`/users/${currentUser.id}`, value, {
-        headers: { "Content-Type": "application/json" },
+      const res = await apiRequest.put(`/users/${currentUser.id}`, {
+        username,
+        email,
+        password,
+        avatar:avatar[0]
       });
-      console.log(res.data);
       updateUser(res.data);
       navigate("/profile");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      setError(error.response?.data?.message || "An error occurred while updating your profile.");
+    } catch (err) {
+      console.log(err);
+      setError(err.response.data.message);
     }
   };
 
@@ -53,9 +44,7 @@ function ProfileUpdatePage() {
               id="username"
               name="username"
               type="text"
-              value={value.username}
-              onChange={(e) => setValue({ ...value, username: e.target.value })}
-              autoComplete="off"
+              defaultValue={currentUser.username}
             />
           </div>
           <div className="item">
@@ -64,38 +53,26 @@ function ProfileUpdatePage() {
               id="email"
               name="email"
               type="email"
-              value={value.email}
-              onChange={(e) => setValue({ ...value, email: e.target.value })}
-              autoComplete="off"
+              defaultValue={currentUser.email}
             />
           </div>
           <div className="item">
             <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={value.password}
-              onChange={(e) => setValue({ ...value, password: e.target.value })}
-              autoComplete="off"
-            />
+            <input id="password" name="password" type="password" />
           </div>
-          <button type="submit">Update</button>
-          {error && <span className="error">{error}</span>}
+          <button>Update</button>
+          {error && <span>error</span>}
         </form>
       </div>
       <div className="sideContainer">
-        <img
-          src={avatar[0] || currentUser.avatar || "https://cdn.pixabay.com/photo/2020/07/14/13/07/icon-5404125_1280.png"}
-          className="avatar"
-        />
+        <img src={avatar[0] || currentUser.avatar || "/noavatar.jpg"} alt="" className="avatar" />
         <UploadWidget
           uwConfig={{
-            cloudName: "dtqy9mnph",
+            cloudName: "lamadev",
             uploadPreset: "estate",
-            folder: "avatars",
             multiple: false,
-            maxImageFileSize: 2000000
+            maxImageFileSize: 2000000,
+            folder: "avatars",
           }}
           setState={setAvatar}
         />
