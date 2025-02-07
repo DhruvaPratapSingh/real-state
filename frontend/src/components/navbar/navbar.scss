@@ -130,8 +130,8 @@ nav {
       position: absolute;
       top: 0;
       right: -50%;
-      background-color: black;
-      color: white;
+      background-color: rgb(196, 161, 140);
+      color: rgb(62, 62, 62);
       height: 100vh;
       width: 50%;
       transition: all 1s ease;
@@ -144,7 +144,26 @@ nav {
       &.active {
         right: 0;
       }
-
+     .btn{
+      font-size: medium;
+      font-weight: bold;
+      color:white;
+      display: flex;
+      flex-direction: column;
+      padding: 6px 14px;
+      border-radius:10px;
+      background-color:rgb(226, 97, 74);
+     }
+     .btnl{
+      font-size: medium;
+      font-weight: bold;
+      color:white;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 15px;
+      border-radius:10px;
+      background-color:rgb(52, 107, 56);
+     }
       @include sm {
         a {
           display: initial;
