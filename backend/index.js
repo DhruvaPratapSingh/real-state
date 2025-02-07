@@ -8,7 +8,7 @@ import userRoute from "./routes/user.route.js";
 
 const app = express();
 console.log(process.env.CORS_ORIGIN);
-app.use(cors({ origin:process.env.https://real-state-six-xi.vercel.app, credentials: true }));
+app.use(cors({ origin:"https://real-state-six-xi.vercel.app", credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
