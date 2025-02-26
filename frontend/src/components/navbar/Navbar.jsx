@@ -9,7 +9,7 @@ function Navbar() {
    let navigate=useNavigate();
   const { currentUser,updateUser } = useContext(AuthContext);
 
-  if(currentUser) fetch();
+  if(currentUser) fetch("/users/login");
   const handleLogout = async () => {
     try {
       await apiRequest.post("/auth/logout");
